@@ -1,6 +1,7 @@
 # Building
-QEMU := ../qemu-build/riscv64-softmmu/qemu-system-riscv64
-TARGET := riscv64gc-unknown-none-elf
+QEMU := ../../qemu-build/riscv64-softmmu/qemu-system-riscv64
+# TARGET := riscv64gc-unknown-none-elf
+TARGET := riscv64imac-unknown-none-elf
 MODE := release
 KERNEL_ELF := target/$(TARGET)/$(MODE)/os
 KERNEL_BIN := $(KERNEL_ELF).bin
@@ -9,7 +10,7 @@ DISASM_TMP := target/$(TARGET)/$(MODE)/asm
 # BOARD
 BOARD ?= qemu
 SBI ?= rustsbi
-BOOTLOADER := ../bootloader/$(SBI)-$(BOARD).bin
+BOOTLOADER := ./$(SBI)-$(BOARD).bin
 K210_BOOTLOADER_SIZE := 131072
 
 # KERNEL ENTRY
