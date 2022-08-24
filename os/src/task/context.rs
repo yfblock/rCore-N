@@ -18,6 +18,7 @@ pub struct TaskContext {
 
 impl TaskContext {
     pub fn goto_trap_return(kernel_stack_top: usize, tid: usize) -> Self {
+        debug!("kernel_stack_top: {:#x}", kernel_stack_top);
         Self {
             ra: trap_return as usize,
             s: [0; 12],

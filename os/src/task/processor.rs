@@ -72,6 +72,7 @@ impl Processor {
             idle_task_cx_ptr,
             unsafe { &*idle_task_cx_ptr }
         );
+        
         // acquire
         let mut task_inner = task.acquire_inner_lock();
         let next_task_cx_ptr = task_inner.get_task_cx_ptr();
@@ -85,6 +86,7 @@ impl Processor {
             next_task_cx_ptr,
             task_cx
         );
+        debug!("program stack pointer: {:#x}", task_inner.task_cx.sp);
         task_inner.last_cpu_cycle = cycle::read();
         // release
         drop(task_inner);

@@ -26,13 +26,13 @@ user_lrv:
 
 build: user
     cp src/linker-qemu.ld src/linker.ld
-    cargo build --features "board_qemu" --release
+    cargo build --features "board_qemu"
     {{OBJCOPY}} {{KERNEL_ELF}} --strip-all -O binary {{KERNEL_BIN}}
     rm src/linker.ld
 
 build_lrv: user_lrv
     cp src/linker-lrv.ld src/linker.ld
-    cargo build --features "board_lrv" --release
+    cargo build --features "board_lrv"
     {{OBJCOPY}} {{KERNEL_ELF}} --strip-all -O binary {{KERNEL_BIN}}
     cp {{KERNEL_BIN}} {{KERNEL_BIN_LRV}}
     rm src/linker.ld

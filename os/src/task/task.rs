@@ -222,6 +222,7 @@ impl TaskControlBlock {
             kernel_stack_top,
             trap_handler as usize,
         );
+        debug!("user_sp: {:#x}, kernel_stack_top: {:#x}", user_sp, kernel_stack_top);
         task_control_block
     }
 

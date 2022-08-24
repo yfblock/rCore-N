@@ -156,11 +156,13 @@ pub fn trap_handler() -> ! {
             );
         }
     }
+    debug!("before trap return");
     trap_return();
 }
 
 #[no_mangle]
 pub fn trap_return() -> ! {
+    debug!("trap return");
     unsafe {
         sstatus::clear_sie();
     }
