@@ -86,7 +86,6 @@ impl Processor {
             next_task_cx_ptr,
             task_cx
         );
-        debug!("program stack pointer: {:#x}", task_inner.task_cx.sp);
         task_inner.last_cpu_cycle = cycle::read();
         // release
         drop(task_inner);

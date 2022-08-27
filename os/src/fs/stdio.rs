@@ -1,6 +1,9 @@
+use alloc::string::String;
+
 use super::File;
 use crate::mm::UserBuffer;
 use crate::print;
+use crate::sbi::{console_putchar, console_getchar};
 use crate::uart::{serial_getchar, serial_putchar};
 use core::fmt::{self, Write};
 
@@ -12,14 +15,19 @@ impl File for Stdin {
     fn read(&self, mut user_buf: UserBuffer) -> Result<usize, isize> {
         assert_eq!(user_buf.len(), 1);
         // busy loop
-        if let Ok(ch) = serial_getchar(0) {
-            unsafe {
-                user_buf.buffers[0].as_mut_ptr().write_volatile(ch);
-            }
-            Ok(1)
-        } else {
-            Err(-1)
+        // if let Ok(ch) = serial_getchar(0) {
+        //     unsafe {
+        //         user_buf.buffers[0].as_mut_ptr().write_volatile(ch);
+        //     }
+        //     Ok(1)
+        // } else {
+        //     Err(-1)
+        // }
+        let ch = console_getchar();
+        unsafe {
+            user_buf.buffers[0].as_mut_ptr().write_volatile(ch as u8);
         }
+        Ok(1)
     }
     fn write(&self, _user_buf: UserBuffer) -> Result<usize, isize> {
         panic!("Cannot write to stdin!");
@@ -32,7 +40,10 @@ impl File for Stdout {
     }
     fn write(&self, user_buf: UserBuffer) -> Result<usize, isize> {
         for buffer in user_buf.buffers.iter() {
-            print!("{}", core::str::from_utf8(*buffer).unwrap());
+            for i in core::str::from_utf8(*buffer).unwrap().as_bytes() {
+                console_putchar(*i as usize);
+            }
+            // print!("{}", core::str::from_utf8(*buffer).unwrap());
         }
         Ok(user_buf.len())
     }
